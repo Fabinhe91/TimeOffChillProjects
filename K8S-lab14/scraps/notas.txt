@@ -1,0 +1,15 @@
+USE winecollection;
+SHOW TABLES;
+
+
+
+CREATE TABLE wines (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    year INT NOT NULL,
+    type VARCHAR(255) NOT NULL
+);
+
+
+
+kubectl exec -it mysql-cdd7574b9-2jvlg -- mysql -u root -p

@@ -1,0 +1,3 @@
+Flask==2.2.3
+#psycopg2==2.9.6  # PostgreSQL adapter for Python
+psycopg2-binary

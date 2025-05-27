@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-frontend-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-frontend
+  template:
+    metadata:
+      labels:
+        app: simple-frontend
+    spec:
+      containers:
+      - name: simple-frontend
+        image: sodsotnas91/simple-frontend:latest
+        ports:
+        - containerPort: 80

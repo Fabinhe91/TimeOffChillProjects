@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Collection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #8B0000;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wine Collection</h1>
+
+    <form id="add-wine-form">
+        <input type="text" id="name" placeholder="Wine Name" required>
+        <input type="number" id="year" placeholder="Year" required>
+        <input type="text" id="type" placeholder="Type" required>
+        <button type="submit">Add Wine</button>
+    </form>
+
+    <h3>Current Wines:</h3>
+    <ul id="wine-list"></ul>
+
+    <script>
+        const form = document.getElementById('add-wine-form');
+        const wineList = document.getElementById('wine-list');
+
+        // Load wines from the backend
+        async function loadWines() {
+            try {
+                const response = await fetch('http://backend-service/wines');
+                const wines = await response.json();
+
+                // Display the wines in the list
+                wineList.innerHTML = wines.map(wine => `<li>${wine.name} (${wine.year}) - ${wine.type}</li>`).join('');
+            } catch (err) {
+                console.error('Error loading wines:', err);
+            }
+        }
+
+        // Add a new wine to the collection
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const year = document.getElementById('year').value;
+            const type = document.getElementById('type').value;
+
+            const newWine = { name, year, type };
+
+            try {
+                const response = await fetch('http://backend-service/wines', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newWine)
+                });
+
+                if (response.ok) {
+                    // Refresh the list of wines
+                    loadWines();
+                }
+            } catch (err) {
+                console.error('Error adding wine:', err);
+            }
+        });
+
+        // Load the wines initially
+        loadWines();
+    </script>
+</body>
+</html>

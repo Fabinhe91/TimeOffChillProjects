@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wine-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wine-backend
+  template:
+    metadata:
+      labels:
+        app: wine-backend
+    spec:
+      containers:
+        - name: wine-backend
+          image: sodsotnas91/wine-backend:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MYSQL_HOST
+              value: "mysql"
+            - name: MYSQL_DB
+              value: "winecollection"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              value: "yourpassword"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wine-backend
+spec:
+  selector:
+    app: wine-backend
+  ports:
+    - port: 5000
+      targetPort: 5000

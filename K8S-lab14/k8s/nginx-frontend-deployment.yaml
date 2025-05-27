@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wine-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wine-frontend
+  template:
+    metadata:
+      labels:
+        app: wine-frontend
+    spec:
+      containers:
+        - name: wine-frontend
+          image: sodsotnas91/wine-frontend:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wine-frontend
+spec:
+  selector:
+    app: wine-frontend
+  ports:
+    - port: 80
+      targetPort: 80
